@@ -233,9 +233,9 @@ case $1 in
     "mms") updatesAddonSnapshots "metamod" "1.10" "";;
     "mms_snapshot") updatesAddonSnapshots "metamod" "1.10" "dev";;
     "mms_dev") updatesAddonSnapshots "metamod" "1.11" "dev";;
-    "sm") updatesAddonSnapshots "sourcemod" "1.7" "";;
-    "sm_snapshot") updatesAddonSnapshots "sourcemod" "1.7" "dev";;
-    "sm_dev") updatesAddonSnapshots "sourcemod" "1.8" "dev";;
+    "sm") updatesAddonSnapshots "sourcemod" "1.8" "";;
+    "sm_snapshot") updatesAddonSnapshots "sourcemod" "1.8" "dev";;
+    "sm_dev") updatesAddonSnapshots "sourcemod" "1.9" "dev";;
     *) cyanMessage "Usage: ${0} mta|mms|mms_snapshot|mms_dev|sm|sm_snapshot|sm_dev";;
 esac
 
