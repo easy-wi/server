@@ -59,6 +59,9 @@ fi
 # Change the clean up cronjob
 if [ "`grep '/home/\*/server/\*/\*/' /etc/crontab`" != "" ]; then
 
+    echo "Creating backup of /etc/crontab"
+    cp /etc/crontab /etc/crontab.pre_migration.backup
+
     echo "Changing entry '/home/*/server/*/*/' at /etc/crontab to '/home/*/server/*/'"
     sed -i 's/home\/\*\/server\/\*\/\*\//home\/\*\/server\/\*\//g' /etc/crontab
 
@@ -69,18 +72,29 @@ fi
 # Check if proftpd rules are installed
 if [ -f /etc/proftpd/conf.d/easy-wi.conf -a "`grep '~/\*/\*/>' /etc/proftpd/conf.d/easy-wi.conf`" != "" ]; then
 
+    echo "Creating backup of /etc/proftpd/conf.d/easy-wi.conf"
+    cp /etc/proftpd/conf.d/easy-wi.conf /etc/proftpd/conf.d/easy-wi.conf.pre_migration.backup
+
     # For each rule, check if still exist and migrate
     echo "Changing entries at /etc/proftpd/conf.d/easy-wi.conf"
 
     if [ "`grep '~/\*/\*/>' /etc/proftpd/conf.d/easy-wi.conf`" != "" ]; then
+        echo "Changing entry '~/*/*/>' to '~/*/>'"
         sed -i 's/~\/\*\/\*\/>/~\/\*\/>/g' /etc/proftpd/conf.d/easy-wi.conf
     fi
 
+    if [ "`grep '/home/\*/pserver/\*>' /etc/proftpd/conf.d/easy-wi.conf`" != "" ]; then
+        echo "Changing entry '/home/*/pserver/*>' to '/home/*/pserver>'"
+        sed -i 's/\/home\/\*\/pserver\/\*>/\/home\/\*\/pserver>/g' /etc/proftpd/conf.d/easy-wi.conf
+    fi
+
     if [ "`grep '<Directory ~/server/\*/' /etc/proftpd/conf.d/easy-wi.conf`" != "" ]; then
+        echo "Changing entries '<Directory ~/server/*/' to '<Directory ~/server/'"
         sed -i 's/<Directory ~\/server\/\*\//<Directory ~\/server\//g' /etc/proftpd/conf.d/easy-wi.conf
     fi
 
     if [ "`grep '~/\*/\*/\*/\*/' /etc/proftpd/conf.d/easy-wi.conf`" != "" ]; then
+        echo "Changing entries '~/*/*/*/*/' to '~/*/*/'"
         sed -i 's/~\/\*\/\*\/\*\/\*\//~\/\*\/\*\//g' /etc/proftpd/conf.d/easy-wi.conf
     fi
 fi
