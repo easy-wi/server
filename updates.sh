@@ -202,18 +202,38 @@ function fileUpdate {
     fi
 }
 
+function mtaFiles {
+    fileUpdate server_mta_configs.txt "https://linux.mtasa.com/dl/baseconfig.tar.gz" "mtasa" "masterserver"
+    fileUpdate server_mta_resources.txt "http://mirror.mtasa.com/mtasa/resources/mtasa-resources-latest.zip" "mtasa" "masterserver"
+}
+
 function updateMTA {
 
     cyanMessage "Searching update for MTA San Andreas"
 
-    DOWNLOAD_URL=`lynx -dump http://linux.mtasa.com/ | egrep -o "http:.*multitheftauto_linux-(.*).tar.gz" | tail -1`
-    update server_mta.txt "$DOWNLOAD_URL" "mtasa" "masterserver"
+    checkCreateVersionFile "server_mta.txt"
 
-    DOWNLOAD_URL=`lynx -dump http://linux.mtasa.com/ | egrep -o "http:.*baseconfig-(.*).tar.gz" | tail -1`
-    update server_mta_baseconfig.txt "$DOWNLOAD_URL" "mtasa" "masterserver"
+    FILE_NAME="multitheftauto_linux_x64.tar.gz"
+    LOCAL_VERSION=`cat $HOME/versions/server_mta.txt | tail -1`
+    CURRENT_VERSION=`lynx -dump http://linux.mtasa.com/ | egrep -o "[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+" | tail -1`
+
+    if ([ "$CURRENT_VERSION" != "$LOCAL_VERSION" -o "$LOCAL_VERSION" == "" ] && [ "$CURRENT_VERSION" != "" ]); then
+
+        greenMessage "Updating server_mta.txt from $LOCAL_VERSION to $CURRENT_VERSION. Name of file is $FILE_NAME"
+
+        downloadExtractFile "mtasa" "$FILE_NAME" "https://linux.mtasa.com/dl/multitheftauto_linux_x64.tar.gz" "masterserver"
+        echo "$CURRENT_VERSION" > "$HOME/versions/server_mta.txt"
+
+        mtaFiles
+
+    elif [ "$CURRENT_VERSION" == "" ]; then
+        cyanMessage "Could not detect current version for mta. Local version is $LOCAL_VERSION."
+    else
+        cyanMessage "mta already up to date. Local version is $LOCAL_VERSION. Most recent version is $CURRENT_VERSION"
+    fi
 
     if [ "`date +'%H'`" == "00" ]; then
-        fileUpdate server_mta_resources.txt "http://mirror.mtasa.com/mtasa/resources/mtasa-resources-latest.zip" "mtasa" "masterserver"
+        mtaFiles
     fi
 }
 
