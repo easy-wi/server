@@ -73,7 +73,7 @@ fi
 if [ -f /etc/proftpd/conf.d/easy-wi.conf -a "`grep '~/\*/\*/>' /etc/proftpd/conf.d/easy-wi.conf`" != "" ]; then
 
     echo "Creating backup of /etc/proftpd/conf.d/easy-wi.conf"
-    cp /etc/proftpd/conf.d/easy-wi.conf /etc/proftpd/conf.d/easy-wi.conf.pre_migration.backup
+    cp /etc/proftpd/conf.d/easy-wi.conf /etc/proftpd/easy-wi.conf.pre_migration.backup
 
     # For each rule, check if still exist and migrate
     echo "Changing entries at /etc/proftpd/conf.d/easy-wi.conf"
@@ -97,4 +97,6 @@ if [ -f /etc/proftpd/conf.d/easy-wi.conf -a "`grep '~/\*/\*/>' /etc/proftpd/conf
         echo "Changing entries '~/*/*/*/*/' to '~/*/*/'"
         sed -i 's/~\/\*\/\*\/\*\/\*\//~\/\*\/\*\//g' /etc/proftpd/conf.d/easy-wi.conf
     fi
+
+    /etc/init.d/proftpd restart
 fi
