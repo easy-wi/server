@@ -35,11 +35,10 @@
 ############################################
 #   Moegliche Cronjob Konfiguration
 #   25 1 * * * cd ~/ && ./updates.sh mta
+#   25 1 * * * cd ~/ && ./updates.sh samp
 #   25 1 * * * cd ~/ && ./updates.sh mms
 #   25 1 * * * cd ~/ && ./updates.sh sm
-#   15 */1 * * * cd ~/ && ./updates.sh mms_snapshot
 #   15 */1 * * * cd ~/ && ./updates.sh mms_dev
-#   15 */1 * * * cd ~/ && ./updates.sh sm_snapshot
 #   15 */1 * * * cd ~/ && ./updates.sh sm_dev
 
 
@@ -256,12 +255,10 @@ case $1 in
     "mta") updateMTA;;
     "samp") updateSAMP;;
     "mms") updatesAddonSnapshots "metamod" "1.10" "";;
-    "mms_snapshot") updatesAddonSnapshots "metamod" "1.10" "dev";;
     "mms_dev") updatesAddonSnapshots "metamod" "1.11" "dev";;
     "sm") updatesAddonSnapshots "sourcemod" "1.8" "";;
-    "sm_snapshot") updatesAddonSnapshots "sourcemod" "1.8" "dev";;
     "sm_dev") updatesAddonSnapshots "sourcemod" "1.9" "dev";;
-    *) cyanMessage "Usage: ${0} mta|mms|mms_snapshot|mms_dev|sm|sm_snapshot|sm_dev";;
+    *) cyanMessage "Usage: ${0} mta|samp|mms|mms_dev|sm|sm_dev";;
 esac
 
 exit 0
