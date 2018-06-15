@@ -172,9 +172,9 @@ function fileUpdate {
 
     checkCreateVersionFile "$1"
 
-    checkCreateFolder "$HOME/$4/$2"
+    checkCreateFolder "$HOME/$4/$3"
 
-    cd "$HOME/$4/$2"
+    cd "$HOME/$4/$3"
 
     wget "$2"
 
@@ -190,7 +190,12 @@ function fileUpdate {
 
             greenMessage "Updating $3 from $LOCAL_VERSION to $CURRENT_VERSION. Name of file is $FILE_NAME"
 
-            unzip "$FILE_NAME"
+            FILENAME_CHECK=`echo "$FILE_NAME" | egrep -o "zip"`
+            if [ "$FILENAME_CHECK" == "zip" ]; then
+                unzip "$FILE_NAME"
+            else
+                tar xfv "$FILE_NAME"
+            fi
 
             echo "$CURRENT_VERSION" > "$HOME/versions/$1"
 
