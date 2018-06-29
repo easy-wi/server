@@ -88,6 +88,15 @@ if [ "$(which lynx 2>/dev/null)" == "" ]; then
 	InstallasRoot
 fi
 
+if [ "$(which java 2>/dev/null)" == "" ]; then
+	if [ "$OScheck" == "debian" -o "$OScheck" == "ubuntu" ]; then
+		PROGRAM="openjdk-8-jdk"
+	elif [ "$OScheck" == "centos" ]; then
+		PROGRAM="java-1.8.0-openjdk"
+	fi
+	InstallasRoot
+fi
+
 function checkCreateVersionFile {
 	if [ ! -f "$HOME/versions/$1" ]; then
 		touch "$HOME/versions/$1"
