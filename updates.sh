@@ -35,12 +35,12 @@
 #
 ############################################
 #   Moegliche Cronjob Konfiguration
-#		25 1 * * * cd ~/ && ./updates.sh mta
-#		25 1 * * * cd ~/ && ./updates.sh samp
-#		25 1 * * * cd ~/ && ./updates.sh mms
-#		25 1 * * * cd ~/ && ./updates.sh sm
-#		15 */1 * * * cd ~/ && ./updates.sh mms_dev
-#		15 */1 * * * cd ~/ && ./updates.sh sm_dev
+#		15 */3 * * * cd ~/ && ./updates.sh mta
+#		15 */3 * * * cd ~/ && ./updates.sh samp
+#		15 */3 * * * cd ~/ && ./updates.sh mms
+#		15 */3 * * * cd ~/ && ./updates.sh sm
+#		15 */3 * * * cd ~/ && ./updates.sh mms_dev
+#		15 */3 * * * cd ~/ && ./updates.sh sm_dev
 #		30 */1 * * * cd ~/ && ./updates.sh mc
 #		30 */1 * * * cd ~/ && ./updates.sh spigot
 #		30 */1 * * * cd ~/ && ./updates.sh forge
@@ -65,8 +65,6 @@ function InstallasRoot {
 	cyanMessage " "
 	cyanMessage "$PROGRAM is not installed.. we will installing automatically!"
 
-	OScheck=`cat /etc/os-release | egrep -o "centos|debian|ubuntu" | head -n1`
-
 	if [ "$OScheck" == "debian" -o "$OScheck" == "ubuntu" ]; then
 		INSTALLER="apt-get"
 	elif [ "$OScheck" == "centos" ]; then
@@ -83,19 +81,23 @@ function InstallasRoot {
 	greenMessage " "
 }
 
+OScheck=`cat /etc/os-release | egrep -o "centos|debian|ubuntu" | head -n1`
+
 if [ "$(which lynx 2>/dev/null)" == "" ]; then
 	PROGRAM="lynx"
 	InstallasRoot
 fi
 
-if [ "$(which java 2>/dev/null)" == "" ]; then
-	if [ "$OScheck" == "debian" -o "$OScheck" == "ubuntu" ]; then
-		PROGRAM="openjdk-8-jdk"
-	elif [ "$OScheck" == "centos" ]; then
-		PROGRAM="java-1.8.0-openjdk"
+function checkJava {
+	if [ "$(which java 2>/dev/null)" == "" ]; then
+		if [ "$OScheck" == "debian" -o "$OScheck" == "ubuntu" ]; then
+			PROGRAM="openjdk-8-jdk"
+		elif [ "$OScheck" == "centos" ]; then
+			PROGRAM="java-1.8.0-openjdk"
+		fi
+		InstallasRoot
 	fi
-	InstallasRoot
-fi
+}
 
 function checkCreateVersionFile {
 	if [ ! -f "$HOME/versions/$1" ]; then
@@ -329,6 +331,7 @@ function MCfileUpdate {
 			mv server.jar minecraft_server.jar
 			FILE_NAME=`ls | egrep -o ".*.jar"`
 		elif [ "$FILE_EXTENSION" == "jar" -a "$(echo $FILE_NAME | egrep -o 'installer')" == "installer" ]; then
+			checkJava
 			java -jar $FILE_NAME --installServer
 			rm -rf $FILE_NAME $FILE_NAME.log
 			FILE_NAME=`ls | egrep "universal.jar"`
@@ -430,6 +433,8 @@ function updateBUKKIT_SPIGOT {
 	CURRENT_VERSION=`lynx --dump https://www.spigotmc.org/wiki/buildtools/ | egrep -o "[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]" | head -n1`
 
 	if ([ "$CURRENT_VERSION" != "$LOCAL_SPIGOT_VERSION" -o "$LOCAL_SPIGOT_VERSION" == "" -o "$CURRENT_VERSION" != "$LOCAL_CRAFTBUKKIT_VERSION" -o "$LOCAL_CRAFTBUKKIT_VERSION" == ""  ] && [ "$CURRENT_VERSION" != "" ]); then
+
+		checkJava
 
 		if [ "$(which git 2>/dev/null)" == "" ]; then
 			PROGRAM="git"
