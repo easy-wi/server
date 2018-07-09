@@ -493,8 +493,8 @@ case $1 in
 	"samp") updateSAMP;;
 	"mms") updatesAddonSnapshots "metamod" "1.10" "";;
 	"mms_dev") updatesAddonSnapshots "metamod" "1.11" "dev";;
-	"sm") updatesAddonSnapshots "sourcemod" "1.8" "";;
-	"sm_dev") updatesAddonSnapshots "sourcemod" "1.9" "dev";;
+	"sm") updatesAddonSnapshots "sourcemod" "1.9" "";;
+	"sm_dev") updatesAddonSnapshots "sourcemod" "1.10" "dev";;
 	"mc") updateMC;;
 	"spigot") updateBUKKIT_SPIGOT;;
 	"bukkit") updateBUKKIT_SPIGOT;;
