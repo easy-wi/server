@@ -141,7 +141,7 @@ SERVER_START_MINIMAL() {
 	CHECK_MSQL=$(if [ -f "$TS_MASTER_PATH"/ts3db_mysql.ini ]; then cat "$TS_MASTER_PATH"/ts3db_mysql.ini | grep "username="; fi)
 
 	if [ "$CHECK_MARIADB" != "" -o "$CHECK_MSQL" != "" ]; then
-		su - -c "ln -s "$TS_MASTER_PATH"/redist/libmariadb.so.2 "$TS_MASTER_PATH"/libmariadb.so.2" "$TS_USER"
+		su - -c 'ln -s "$TS_MASTER_PATH"/redist/libmariadb.so.2 "$TS_MASTER_PATH"/libmariadb.so.2' "$TS_USER"
 		su - -c "$TS_MASTER_PATH/ts3server_minimal_runscript.sh inifile=ts3server.ini 2>&1 | tee $TS_MASTER_PATH/logs/ts3server_minimal_start_$(date +%d-%m-%Y).log" "$TS_USER" &
 	else
 		su - -c "$TS_MASTER_PATH/ts3server_minimal_runscript.sh | tee $TS_MASTER_PATH/logs/ts3server_minimal_start_$(date +%d-%m-%Y).log" "$TS_USER" &
