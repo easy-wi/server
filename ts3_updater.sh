@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Debug Mode
+# DEBUG MODE
 DEBUG="OFF"
 
 #    Author:     Ulrich Block <ulrich.block@easy-wi.com>,
@@ -36,16 +36,15 @@ DEBUG="OFF"
 #    Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 #    Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 
-# Backup Path
-BACKUP_PATH="your_Backup_path_here"
 
-##################################################
-##################################################
-##########                              ##########
-##########    !!! DO NOT CHANCE !!!     ##########
-##########                              ##########
-##################################################
-##################################################
+# Backup Path/Folder
+# if this Variable empty, then will all Backups saved in /home
+BACKUP_PATH=""
+
+
+##################################
+##### Do not edit from here! #####
+##################################
 
 if [ "$DEBUG" = "ON" ]; then
 	set -x
@@ -88,6 +87,16 @@ TS_MASTER_PATH_TMP=$(find /home -type f -name 'ts3server')
 TS_USER=$(ls -la "$TS_MASTER_PATH_TMP" | awk '{print $3}')
 TS_GROUP=$(ls -la "$TS_MASTER_PATH_TMP" | awk '{print $4}')
 TS_MASTER_PATH=$(echo "$TS_MASTER_PATH_TMP" | sed 's/\/ts3server//')
+
+if [ "$BACKUP_PATH" == "" ]; then
+	BACKUP_PATH=$("TS_MASTER_PATH_TMP"/Backup)
+fi
+
+if [ "$TS_MASTER_PATH_TMP" == "" ]; then
+	echo
+	redMessage "No teamspeak 3 server found!"
+	FINISHED
+fi
 
 yellowMessage "Checking for the latest Updater Script"
 LATEST_SCRIPT_VERSION=$(wget -q --timeout=60 -O - https://api.github.com/repos/Lacrimosa99/Easy-WI-Teamspeak-Updater/releases/latest | grep -Po '(?<="tag_name": ")([0-9]\.[0-9])')
@@ -284,6 +293,9 @@ if [ "$TS_USER" != "" ]; then
 			su - -c "$TS_MASTER_PATH/ts3server_startscript.sh start" "$TS_USER" 2>&1 >/dev/null
 			sleep 2
 			greenMessage "Done"
+			echo
+
+			greenMessage "Backups saved in $BACKUP_PATH"
 		else
 			redMessage "Download the last TS3 Files failed!"
 			FINISHED
