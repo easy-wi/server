@@ -88,10 +88,6 @@ TS_USER=$(ls -la "$TS_MASTER_PATH_TMP" | awk '{print $3}')
 TS_GROUP=$(ls -la "$TS_MASTER_PATH_TMP" | awk '{print $4}')
 TS_MASTER_PATH=$(echo "$TS_MASTER_PATH_TMP" | sed 's/\/ts3server//')
 
-if [ "$BACKUP_PATH" == "" ]; then
-	BACKUP_PATH=$("TS_MASTER_PATH_TMP"/Backup)
-fi
-
 if [ "$TS_MASTER_PATH_TMP" == "" ]; then
 	echo
 	redMessage "No teamspeak 3 server found!"
