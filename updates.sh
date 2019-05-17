@@ -298,8 +298,12 @@ function MCfileUpdate {
 
 	LOCAL_VERSION=`cat $HOME/versions/$1 | tail -1`
 
-	if [ "$DOWNLOAD_URL" != "" ]; then
+	if [ "$DOWNLOAD_URL" != "" -a "$VERSION_URL" == "" ]; then
 		CURRENT_VERSION=`echo $DOWNLOAD_URL | egrep -o [[:digit:]].* | head -n1 | sed 's/.zip\|.tar\|.jar//' | sed 's/\/.*//'`
+	fi
+
+	if ([ "$VERSION_URL" != "" ] && [ "$CURRENT_VERSION" == "1" -o "$CURRENT_VERSION" == "" ]); then
+		CURRENT_VERSION=`echo $VERSION_URL`
 	fi
 
 	if ([ "$CURRENT_VERSION" != "$LOCAL_VERSION" -o "$LOCAL_VERSION" == "" ] && [ "$CURRENT_VERSION" != "" ]); then
@@ -385,6 +389,7 @@ function updateMC {
 	cyanMessage "Searching update for Minecraft"
 
 	DOWNLOAD_URL=`lynx -dump "https://minecraft.net/de-de/download/server" | egrep -o "https://launcher.*"`
+	VERSION_URL=`lynx --dump "https://minecraft.net/de-de/download/server" | egrep -o "minecraft_server.[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]" | head -n1 | cut -c 18-`
 	MCfileUpdate server_mc.txt "$DOWNLOAD_URL" "mc" "masterserver"
 }
 
@@ -452,7 +457,7 @@ function updateBUKKIT_SPIGOT {
 
 		cyanMessage "Compile latest Minecraft Spigot and CraftBukkit Build"
 		git config --global --unset core.autocrlf
-		java -jar BuildTools.jar
+		java -Xmx1024M -jar BuildTools.jar
 
 		VERSION_CRAFTBUKKIT=`ls | egrep "craftbukkit" | egrep -o "[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]"`
 		VERSION_SPIGOT=`ls | egrep "spigot" | egrep -o "[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]"`
@@ -491,6 +496,32 @@ function updateBUKKIT_SPIGOT {
 	fi
 }
 
+function updateAll {
+	updateMTA
+	echo
+	updateSAMP
+	echo
+	updatesAddonSnapshots "metamod" "1.10" ""
+	echo
+	updatesAddonSnapshots "metamod" "1.11" "dev"
+	echo
+	updatesAddonSnapshots "sourcemod" "1.9" ""
+	echo
+	updatesAddonSnapshots "sourcemod" "1.10" "dev"
+	echo
+	updateMC
+	echo
+	updateBUKKIT_SPIGOT
+	echo
+	updateMCFORGE
+	echo
+	updateMCHEXXIT
+	echo
+	updateMCTEKKIT
+	echo
+	updateMCTEKKITCLASSIC
+}
+
 checkCreateFolder $HOME/versions
 
 case $1 in
@@ -507,6 +538,7 @@ case $1 in
 	"hexxit") updateMCHEXXIT;;
 	"tekkit") updateMCTEKKIT;;
 	"tekkit-classic") updateMCTEKKITCLASSIC;;
+	"all") updateAll;;
 	*) cyanMessage "Usage: ${0} mta|mms|mms_dev|sm|sm_dev|mc|spigot|bukkit|forge|hexxit|tekkit|tekkit-classic";;
 esac
 
