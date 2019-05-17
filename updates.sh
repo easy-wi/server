@@ -478,13 +478,15 @@ function updateBUKKIT_SPIGOT {
 		mv spigot-$VERSION_SPIGOT.jar $HOME/masterserver/spigot/spigot.jar
 		MCEULA eula.txt "$HOME/masterserver/spigot"
 
-		echo "$VERSION_CRAFTBUKKIT" > "$HOME/versions/server_bukkit.txt"
-		echo "$VERSION_SPIGOT" > "$HOME/versions/server_spigot.txt"
+		echo "$VERSION_CRAFTBUKKIT" > $HOME/versions/server_bukkit.txt
+		echo "$VERSION_SPIGOT" > $HOME/versions/server_spigot.txt
 
 		if [ "$LOCAL_SPIGOT_VERSION" == "" ]; then
 			LOCAL_SPIGOT_VERSION="none"
 			LOCAL_CRAFTBUKKIT_VERSION="none"
 		fi
+
+		rm -rf $HOME/MCcompiler
 
 		greenMessage "Updating Spigot from $LOCAL_SPIGOT_VERSION to $CURRENT_VERSION. Name of file is spigot.jar"
 		greenMessage "Updating CraftBukkit from $LOCAL_CRAFTBUKKIT_VERSION to $CURRENT_VERSION. Name of file is craftbukkit.jar"
