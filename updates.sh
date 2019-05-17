@@ -457,7 +457,7 @@ function updateBUKKIT_SPIGOT {
 
 		cyanMessage "Compile latest Minecraft Spigot and CraftBukkit Build"
 		git config --global --unset core.autocrlf
-		java -Xmx1024M -jar BuildTools.jar
+		java -Xmx1024M -jar BuildTools.jar --rev latest
 
 		VERSION_CRAFTBUKKIT=`ls | egrep "craftbukkit" | egrep -o "[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]"`
 		VERSION_SPIGOT=`ls | egrep "spigot" | egrep -o "[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]"`
