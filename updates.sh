@@ -435,7 +435,7 @@ function updateBUKKIT_SPIGOT {
 	if [ -f $HOME/versions/server_bukkit.txt ]; then
 		LOCAL_CRAFTBUKKIT_VERSION=`cat $HOME/versions/server_bukkit.txt | tail -1`
 	fi
-	CURRENT_VERSION=`lynx --dump https://www.spigotmc.org/wiki/buildtools/ | egrep -o "[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]" | head -n1`
+	CURRENT_VERSION=`lynx --dump https://www.spigotmc.org/wiki/buildtools/ | grep "Currently" | egrep -o "[[:digit:]].[[:digit:]][[:digit:]].[[:digit:]]"`
 
 	if ([ "$CURRENT_VERSION" != "$LOCAL_SPIGOT_VERSION" -o "$LOCAL_SPIGOT_VERSION" == "" -o "$CURRENT_VERSION" != "$LOCAL_CRAFTBUKKIT_VERSION" -o "$LOCAL_CRAFTBUKKIT_VERSION" == ""  ] && [ "$CURRENT_VERSION" != "" ]); then
 
