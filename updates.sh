@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #   Author:     Ulrich Block <ulrich.block@easy-wi.com>
-#               Alexander Dörwald <alexander.doerwald@easy-wi.com>
+#               Alexander DÃ¶rwald <alexander.doerwald@easy-wi.com>
 #
 #   This file is part of Easy-WI.
 #
@@ -507,9 +507,9 @@ function updateAll {
 	echo
 	updatesAddonSnapshots "metamod" "1.11" "dev"
 	echo
-	updatesAddonSnapshots "sourcemod" "1.9" ""
+	updatesAddonSnapshots "sourcemod" "1.10" ""
 	echo
-	updatesAddonSnapshots "sourcemod" "1.10" "dev"
+	updatesAddonSnapshots "sourcemod" "1.11" "dev"
 	echo
 	updateMC
 	echo
@@ -531,8 +531,8 @@ case $1 in
 	"samp") updateSAMP;;
 	"mms") updatesAddonSnapshots "metamod" "1.10" "";;
 	"mms_dev") updatesAddonSnapshots "metamod" "1.11" "dev";;
-	"sm") updatesAddonSnapshots "sourcemod" "1.9" "";;
-	"sm_dev") updatesAddonSnapshots "sourcemod" "1.10" "dev";;
+	"sm") updatesAddonSnapshots "sourcemod" "1.10" "";;
+	"sm_dev") updatesAddonSnapshots "sourcemod" "1.11" "dev";;
 	"mc") updateMC;;
 	"spigot") updateBUKKIT_SPIGOT;;
 	"bukkit") updateBUKKIT_SPIGOT;;
