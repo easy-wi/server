@@ -330,7 +330,7 @@ function MCfileUpdate {
 		elif [ "$FILE_EXTENSION" == "tar" ]; then
 			tar xfv "$FILE_NAME"
 			rm -rf "$FILE_NAME"
-			FILE_NAME=`ls | egrep -o ".*.jar" | egrep -v "minecraft_server.*.`
+			FILE_NAME=`ls | egrep -o ".*.jar" | egrep -v "minecraft_server.*."`
 		elif [ "$FILE_EXTENSION" == "jar" -a "$FILE_NAME" == "server.jar" ]; then
 			mv server.jar minecraft_server.jar
 			FILE_NAME=`ls | egrep -o ".*.jar"`
