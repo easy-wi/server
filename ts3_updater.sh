@@ -41,6 +41,9 @@ DEBUG="OFF"
 # if this Variable empty, then will all Backups saved in /home
 BACKUP_PATH=""
 
+# Backup Save Time
+BACKUP_SAVE_TIME="62"
+
 
 ##################################
 ##### Do not edit from here! #####
@@ -88,6 +91,10 @@ TS_USER=$(ls -la "$TS_MASTER_PATH_TMP" | awk '{print $3}')
 TS_GROUP=$(ls -la "$TS_MASTER_PATH_TMP" | awk '{print $4}')
 TS_MASTER_PATH=$(echo "$TS_MASTER_PATH_TMP" | sed 's/\/ts3server//')
 
+if [ "$BACKUP_PATH" == "" ]; then
+	BACKUP_PATH=$("TS_MASTER_PATH_TMP"/Backup)
+fi
+
 if [ "$TS_MASTER_PATH_TMP" == "" ]; then
 	echo
 	redMessage "No teamspeak 3 server found!"
@@ -124,8 +131,8 @@ else
 	echo "$MACHINE is not supported!"
 fi
 
-for LASTEST_TS3_VERSION in $(curl -s "http://dl.4players.de/ts/releases/?C=M;O=D" | grep -Po '(?<=href=")[0-9]+(\.[0-9]+){2,3}(?=/")' | sort -Vr); do
-	DOWNLOAD_URL_VERSION="http://dl.4players.de/ts/releases/$LASTEST_TS3_VERSION/teamspeak3-server_linux_$ARCH-$LASTEST_TS3_VERSION.tar.bz2"
+for LASTEST_TS3_VERSION in $(curl -s "https://files.teamspeak-services.com/releases/server/?C=M;O=D"  | grep -Po '(?<=href=")[0-9]+(\.[0-9]+){2,3}' | sort -Vr); do
+	DOWNLOAD_URL_VERSION="https://files.teamspeak-services.com/releases/server/$LASTEST_TS3_VERSION/teamspeak3-server_linux_$ARCH-$LASTEST_TS3_VERSION.tar.bz2"
 	STATUS=$(curl -I $DOWNLOAD_URL_VERSION 2>&1 | grep "HTTP/" | awk '{print $2}')
 
 	if [ "$STATUS" == "200" ]; then
@@ -287,6 +294,12 @@ if [ "$TS_USER" != "" ]; then
 
 			yellowMessage "Start TS3 Server"
 			su - -c "$TS_MASTER_PATH/ts3server_startscript.sh start" "$TS_USER" 2>&1 >/dev/null
+			sleep 2
+			greenMessage "Done"
+			echo
+
+			yellowMessage "Delete old Backups"
+			find "$BACKUP_PATH" -maxdepth 6 -mtime +"$BACKUP_SAVE_TIME" -type f -exec rm -rf {} \; > /dev/null 2>&1
 			sleep 2
 			greenMessage "Done"
 			echo
