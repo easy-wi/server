@@ -205,9 +205,11 @@ function updatesAddonSnapshots {
 	fi
 
 	if [ "$1" == "sourcemod" ]; then
-		DOWNLOAD_URL=`lynx -dump "http://www.sourcemod.net/smdrop/$2/" | egrep -o "http:.*sourcemod-.*-linux.*" | tail -2 | head -n 1`
+		DOWNLOAD_URL=`lynx -dump "http://www.sourcemod.net/smdrop/$2/sourcemod-latest-linux" | tr -d " \t\n\r"`
+		DOWNLOAD_URL="http://www.sourcemod.net/smdrop/$2/$DOWNLOAD_URL"	
 	else
-		DOWNLOAD_URL=`lynx -dump "http://www.metamodsource.net/mmsdrop/$2/" | egrep -o "http:.*mmsource-.*-git.*-linux.*" | tail -1`
+		DOWNLOAD_URL=`lynx -dump "http://www.metamodsource.net/mmsdrop/$2/mmsource-latest-linux" | tr -d " \t\n\r"`
+		DOWNLOAD_URL="http://www.metamodsource.net/mmsdrop/$2/$DOWNLOAD_URL
 	fi
 
 	if [ "$3" == "" ]; then
