@@ -209,7 +209,7 @@ function updatesAddonSnapshots {
 		DOWNLOAD_URL="http://www.sourcemod.net/smdrop/$2/$DOWNLOAD_URL"	
 	else
 		DOWNLOAD_URL=`lynx -dump "http://www.metamodsource.net/mmsdrop/$2/mmsource-latest-linux" | tr -d " \t\n\r"`
-		DOWNLOAD_URL="http://www.metamodsource.net/mmsdrop/$2/$DOWNLOAD_URL
+		DOWNLOAD_URL="http://www.metamodsource.net/mmsdrop/$2/$DOWNLOAD_URL"
 	fi
 
 	if [ "$3" == "" ]; then
