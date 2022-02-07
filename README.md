@@ -1,4 +1,4 @@
-# server
+# Server
 Optional server side scripts, like updater
 
 Supported OS:
@@ -6,6 +6,6 @@ Supported OS:
   - Ubuntu
   - CentOS
   
-# optional scripts
+# Optional scripts
 
-ARK Mod Manager: https://github.com/Lacrimosa99/Easy-WI-ARK-Mod-Manager
+[ARK Mod Manager](https://github.com/Lacrimosa99/Easy-WI-ARK-Mod-Manager)
