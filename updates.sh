@@ -505,13 +505,13 @@ function updateAll {
 	echo
 	updateSAMP
 	echo
-	updatesAddonSnapshots "metamod" "1.10" ""
+	updatesAddonSnapshots "metamod" "1.11" ""
 	echo
-	updatesAddonSnapshots "metamod" "1.11" "dev"
+	updatesAddonSnapshots "metamod" "1.12" "dev"
 	echo
-	updatesAddonSnapshots "sourcemod" "1.10" ""
+	updatesAddonSnapshots "sourcemod" "1.11" ""
 	echo
-	updatesAddonSnapshots "sourcemod" "1.11" "dev"
+	updatesAddonSnapshots "sourcemod" "1.12" "dev"
 	echo
 	updateMC
 	echo
