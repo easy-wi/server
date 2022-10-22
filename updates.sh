@@ -531,10 +531,10 @@ checkCreateFolder $HOME/versions
 case $1 in
 	"mta") updateMTA;;
 	"samp") updateSAMP;;
-	"mms") updatesAddonSnapshots "metamod" "1.10" "";;
-	"mms_dev") updatesAddonSnapshots "metamod" "1.11" "dev";;
-	"sm") updatesAddonSnapshots "sourcemod" "1.10" "";;
-	"sm_dev") updatesAddonSnapshots "sourcemod" "1.11" "dev";;
+	"mms") updatesAddonSnapshots "metamod" "1.11" "";;
+	"mms_dev") updatesAddonSnapshots "metamod" "1.12" "dev";;
+	"sm") updatesAddonSnapshots "sourcemod" "1.11" "";;
+	"sm_dev") updatesAddonSnapshots "sourcemod" "1.12" "dev";;
 	"mc") updateMC;;
 	"spigot") updateBUKKIT_SPIGOT;;
 	"bukkit") updateBUKKIT_SPIGOT;;
