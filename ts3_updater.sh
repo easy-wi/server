@@ -102,14 +102,14 @@ if [ "$TS_MASTER_PATH_TMP" == "" ]; then
 fi
 
 yellowMessage "Checking for the latest Updater Script"
-LATEST_SCRIPT_VERSION=$(curl https://github.com/easy-wi/server/blob/master/ts3_updater.sh | egrep "CURRENT_SCRIPT_VERSION" | grep -Po '([0-9]\.[0-9])')
+LATEST_SCRIPT_VERSION=$(curl https://raw.githubusercontent.com/easy-wi/server/master/ts3_updater.sh | egrep "CURRENT_SCRIPT_VERSION" | grep -Po '([0-9]\.[0-9])')
 
 if [ "$LATEST_SCRIPT_VERSION" != "" ]; then
 	if [ $(printf "${LATEST_SCRIPT_VERSION}\n${CURRENT_SCRIPT_VERSION}" | sort -V | tail -n 1) != "$CURRENT_SCRIPT_VERSION" ]; then
 		echo
 		redMessage "You are using a old TS3 Updater Script Version ${CURRENT_SCRIPT_VERSION}."
 		redMessage "Please Upgrade to Version ${LATEST_SCRIPT_VERSION} and retry."
-		redMessage "Download Link: https://github.com/Lacrimosa99/Easy-WI-Teamspeak-Updater/releases"
+		redMessage "Download Link: https://github.com/easy-wi/server/blob/master/ts3_updater.sh"
 		FINISHED
 	else
 		greenMessage "You are using a Up-to-Date Script Version ${CURRENT_SCRIPT_VERSION}"
