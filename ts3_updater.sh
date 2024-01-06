@@ -41,9 +41,6 @@ DEBUG="OFF"
 # if this Variable empty, then will all Backups saved in /home
 BACKUP_PATH=""
 
-# Backup Save Time
-BACKUP_SAVE_TIME="62"
-
 
 ##################################
 ##### Do not edit from here! #####
@@ -81,7 +78,7 @@ cyanMessage() {
 	echo -e "\\033[36;1m${@}\033[0m"
 }
 
-CURRENT_SCRIPT_VERSION="1.5"
+CURRENT_SCRIPT_VERSION="1.6"
 TMP_PATH="/tmp/teamspeak_backup"
 BACKUP_FILES=("licensekey.dat" "serverkey.dat" "ts3server.sqlitedb" "query_ip_blacklist.txt" "query_ip_whitelist.txt" "ts3db_mariadb.ini" "ts3db_mysql.ini" "ts3server.ini" "ts3server_startscript.sh" ".bash_history" ".bash_logout" ".bashrc" ".profile")
 BACKUP_DIR=("backup" "Backup" "backups" "logs" "files" ".ssh" ".config")
@@ -92,7 +89,7 @@ TS_GROUP=$(ls -la "$TS_MASTER_PATH_TMP" | awk '{print $4}')
 TS_MASTER_PATH=$(echo "$TS_MASTER_PATH_TMP" | sed 's/\/ts3server//')
 
 if [ "$BACKUP_PATH" == "" ]; then
-	BACKUP_PATH=$("TS_MASTER_PATH_TMP"/Backup)
+	BACKUP_PATH="$TS_MASTER_PATH_TMP/Backup"
 fi
 
 if [ "$TS_MASTER_PATH_TMP" == "" ]; then
@@ -102,14 +99,14 @@ if [ "$TS_MASTER_PATH_TMP" == "" ]; then
 fi
 
 yellowMessage "Checking for the latest Updater Script"
-LATEST_SCRIPT_VERSION=$(curl https://raw.githubusercontent.com/easy-wi/server/master/ts3_updater.sh | egrep "CURRENT_SCRIPT_VERSION" | grep -Po '([0-9]\.[0-9])')
+LATEST_SCRIPT_VERSION=$(curl -q https://raw.githubusercontent.com/easy-wi/server/master/ts3_updater.sh | egrep "CURRENT_SCRIPT_VERSION" | grep -Po '([0-9]\.[0-9])')
 
 if [ "$LATEST_SCRIPT_VERSION" != "" ]; then
 	if [ $(printf "${LATEST_SCRIPT_VERSION}\n${CURRENT_SCRIPT_VERSION}" | sort -V | tail -n 1) != "$CURRENT_SCRIPT_VERSION" ]; then
 		echo
 		redMessage "You are using a old TS3 Updater Script Version ${CURRENT_SCRIPT_VERSION}."
 		redMessage "Please Upgrade to Version ${LATEST_SCRIPT_VERSION} and retry."
-		redMessage "Download Link: https://github.com/easy-wi/server/blob/master/ts3_updater.sh"
+		redMessage "Download Link: https://raw.githubusercontent.com/easy-wi/server/master/ts3_updater.sh"
 		FINISHED
 	else
 		greenMessage "You are using a Up-to-Date Script Version ${CURRENT_SCRIPT_VERSION}"
@@ -131,7 +128,7 @@ else
 	echo "$MACHINE is not supported!"
 fi
 
-for LASTEST_TS3_VERSION in $(curl -s "https://files.teamspeak-services.com/releases/server/?C=M;O=D"  | grep -Po '(?<=href=")[0-9]+(\.[0-9]+){2,3}' | sort -Vr); do
+for LASTEST_TS3_VERSION in $(curl -s "https://www.teamspeak.com/versions/server.json" | grep -Po '[0-9]+(\.[0-9]+){2,3}' | sort -Vr); do
 	DOWNLOAD_URL_VERSION="https://files.teamspeak-services.com/releases/server/$LASTEST_TS3_VERSION/teamspeak3-server_linux_$ARCH-$LASTEST_TS3_VERSION.tar.bz2"
 	STATUS=$(curl -I $DOWNLOAD_URL_VERSION 2>&1 | grep "HTTP/" | awk '{print $2}')
 
@@ -294,12 +291,6 @@ if [ "$TS_USER" != "" ]; then
 
 			yellowMessage "Start TS3 Server"
 			su - -c "$TS_MASTER_PATH/ts3server_startscript.sh start" "$TS_USER" 2>&1 >/dev/null
-			sleep 2
-			greenMessage "Done"
-			echo
-
-			yellowMessage "Delete old Backups"
-			find "$BACKUP_PATH" -maxdepth 6 -mtime +"$BACKUP_SAVE_TIME" -type f -exec rm -rf {} \; > /dev/null 2>&1
 			sleep 2
 			greenMessage "Done"
 			echo
